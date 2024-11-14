@@ -1,3 +1,4 @@
+
 from tabulate import tabulate
 
 class Student:
@@ -5,11 +6,11 @@ class Student:
         self.name = sname
         self.scores = s_scores
 
-    def calculate_average(self):
-        total = sum(self.scores)
-        count = len(self.scores)
-        average = total / count
-        return average
+    def calculate_average_marks(self):
+        total_sum = sum(self.scores)
+        length = len(self.scores)
+        average_val = total_sum / length
+        return average_val
 
     def is_passing(self):
         for score in self.scores:
@@ -36,34 +37,34 @@ class PerformanceTracker:
         else:
             print(f"Student '{name}' not found.")
 
-    def display_student_marks(self, name):
+    def show_marks(self, name):
         if name in self.students:
             student = self.students[name]
-            subjects = ["Math", "Science", "English"]
-            data = zip(subjects, student.scores)
+            courses = ["Math", "Science", "English"]
+            data_zipped = zip(courses, student.scores)
             print(f"\nMarks for {name}:")
-            print(tabulate(data, headers=["Subject", "Score"], tablefmt="grid"))
-            print(f"Average Score: {student.calculate_average():.2f}")
+            print(tabulate(data_zipped, headers=["Subject", "Score"], tablefmt="grid"))
+            print(f"Average Score: {student.calculate_average_marks():.2f}")
             print(f"Status: {'Passing' if student.is_passing() else 'Needs Improvement'}\n")
             return True
         else:
             print(f"\nStudent '{name}' not found.")
             return False
 
-    def display_class_metrics(self):
+    def show_matrics(self):
         if not self.students:
             print("No students to display.")
             return
 
-        table = []
+        listtable = []
         for name, student in self.students.items():
-            average = student.calculate_average()
+            average = student.calculate_average_marks()
             status = "Passing" if student.is_passing() else "Needs Improvement"
-            table.append([name, *student.scores, f"{average:.2f}", status])
+            listtable.append([name, *student.scores, f"{average:.2f}", status])
 
-        headers = ["Name", "Math", "Science", "English", "Average", "Status"]
+        labels = ["Name", "Math", "Science", "English", "Average", "Status"]
         print("\nClass Metrics:")
-        print(tabulate(table, headers=headers, tablefmt="grid"))
+        print(tabulate(listtable, headers=labels, tablefmt="grid"))
         print(f"\nClass Average: {self.calculate_class_average():.2f}\n")
 
     def calculate_class_average(self):
@@ -71,17 +72,17 @@ class PerformanceTracker:
             return 0
         total_average = 0
         for student in self.students.values():
-            total_average += student.calculate_average()
+            total_average += student.calculate_average_marks()
         class_average = total_average / len(self.students)
         return class_average
 
 def get_student_data():
     name = input("Enter student name: ")
     scores = []
-    for subject in ["Math", "Science", "English"]:
+    for course in ["Math", "Science", "English"]:
         while True:
             try:
-                score = int(input(f"Enter score for {subject}: "))
+                score = int(input(f"Enter score for {course}: "))
                 scores.append(score)
                 break
             except ValueError:
@@ -89,7 +90,7 @@ def get_student_data():
     return name, scores
 
 def main():
-    tracker = PerformanceTracker()
+    track_class = PerformanceTracker()
 
     while True:
         print("\n--- Student Performance Tracker ---")
@@ -102,26 +103,26 @@ def main():
 
         if choice == '1':
             name, scores = get_student_data()
-            tracker.add_student(name, scores)
+            track_class.add_student(name, scores)
             print(f"Added student {name}.\n")
 
         elif choice == '2':
             name = input("Enter the name of the student to modify: ")
             _, new_scores = get_student_data()
-            tracker.modify_student(name, new_scores)
+            track_class.modify_student(name, new_scores)
 
         elif choice == '3':
             while True:
                 name = input("Enter the name of the student to view marks (or type 'menu' to return to main menu): ")
                 if name.lower() == 'menu':
                     break
-                if tracker.display_student_marks(name):
+                if track_class.show_marks(name):
                     break
                 else:
                     print("Please enter a valid student name or type 'menu' to return to the main menu.")
 
         elif choice == '4':
-            tracker.display_class_metrics()
+            track_class.show_matrics()
 
         elif choice == '5':
             print("Exiting Student Performance Tracker. Goodbye!")
