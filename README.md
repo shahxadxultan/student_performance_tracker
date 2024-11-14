@@ -19,7 +19,7 @@ This project is a Python-based system to manage and track student grades using O
 - pycharm or vs code.
 
 ## Installation:
-1. Clone the repository using `git clone https://github.com/your_username/Student_Performance_Tracker.git`
+1. Clone the repository using `git clone https://github.com/shahxadxultan/student_performance_tracker.git`
 2.  run the Python script directly.
 
 ## libraries
